@@ -1,0 +1,9 @@
+{
+  "name": "NOTE SAVER",
+  "description": "Store Details to Copy Paste",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "julian_day.html"
+  }
+}
