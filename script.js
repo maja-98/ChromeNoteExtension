@@ -18,14 +18,15 @@ const loadSavedItems = (storedItems) => {
     else{
         document.getElementById('history-head').style.display = "none"
     }
-
+    
     const innerVal = storedItems.reverse().map(item =>{
+        const maskClass = item.mask===true?'mask-text':''
         return (
             `<li class='list-item'>
                 <p id='list-date'>${item.date}</p>
                 <div class='list-item-inner'>
                     <h6>${item.key}</h6>
-                    <p title='click to copy' class='copy-text'>${item.value}</p>
+                    <p title='click to copy'  class='copy-text ${maskClass}'>${item.value}</p>
                     <button class='delete-btn' id='${item.id}'  >X</button>
                 </div>
             </li>`
@@ -64,11 +65,12 @@ const saveFunction = () => {
     const heading = document.getElementById('choice').value
     const saveValue = document.getElementById('save-value').value
     const dateNow = new Date(Date.now()).toLocaleString()
+    const maskFlag = document.getElementById('mask').checked
     
     let id = Math.max(...storedItems.map(item => item.id))
     id = id===-Infinity ? 1 : id+1
     if (heading && saveValue){
-        const saveItem = {'id':id,'key':heading,'value':saveValue,'date':dateNow}
+        const saveItem = {'id':id,'key':heading,'value':saveValue,'date':dateNow,'mask':maskFlag}
         storedItems.push(saveItem)
         localStorage.setItem('ExtHistory',JSON.stringify(storedItems))
         document.getElementById('save-value').value =""
