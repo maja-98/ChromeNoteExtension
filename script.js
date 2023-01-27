@@ -10,7 +10,7 @@ else{
 const handleSubmit = (e) =>{
     e.preventDefault()
 }
-const loadSavedItems = () => {
+const loadSavedItems = (storedItems) => {
     const ul = document.getElementById("history")
     if (storedItems.length >0 ){
         document.getElementById('history-head').style.display = "block"
@@ -72,7 +72,7 @@ const saveFunction = () => {
         storedItems.push(saveItem)
         localStorage.setItem('ExtHistory',JSON.stringify(storedItems))
         document.getElementById('save-value').value =""
-        loadSavedItems()
+        loadSavedItems(JSON.parse(localStorage.getItem('ExtHistory')).filter(item => item.key.match(document.getElementById('search-box').value)))
     }
     else{
         const message = document.getElementById('message')
@@ -100,16 +100,21 @@ const handleCopy = (e) =>{
 const deleteFunction = (id) => {
     storedItems = storedItems.filter(item => item.id!==parseInt(id))
     localStorage.setItem('ExtHistory',JSON.stringify(storedItems))
-    loadSavedItems()
+    loadSavedItems(JSON.parse(localStorage.getItem('ExtHistory')).filter(item => item.key.match(document.getElementById('search-box').value)))
     
 }
+const handleSearch = (e) => {
+	const value = e.target.value
+	loadSavedItems(JSON.parse(localStorage.getItem('ExtHistory')).filter(item => item.key.toLowerCase().match(value.toLowerCase())))
+}
 getJulianDay()
-loadSavedItems()
+loadSavedItems(storedItems)
 document.getElementById('save').addEventListener('click',saveFunction)
 //add Event listener not inline
 
 
 document.getElementById('input-handle-container').addEventListener('submit',handleSubmit)
+document.getElementById('search-box').addEventListener('input',(event) => handleSearch(event))
 
 //find that comma bug
 setInterval(()=>{
